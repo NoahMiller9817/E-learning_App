@@ -11,7 +11,7 @@ const HomeScreen: React.FC = () => {
                     <Text style={styles.userName}>Dishant Nirmal</Text>
                 </View>
                 <View style={{ width: 32, height: 32, backgroundColor: "#c5d2f6", borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <View style={{ width: 10, height: 10, backgroundColor: "blue", borderRadius: 50, position: "absolute", right: 3, top: 1.5 }}>
+                    <View style={{ width: 10, height: 10, backgroundColor: "blue", borderRadius: 50, position: "absolute", right: 4, top: 1.8 }}>
                     </View>
                     <Ionicons name="notifications" size={24} color="#4f75fc" />
                 </View>

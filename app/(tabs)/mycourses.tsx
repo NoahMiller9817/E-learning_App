@@ -42,7 +42,7 @@ const MyCourses: React.FC = () => {
     return (
         <View style={styles.container}>
             <View style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 20 }}>
-                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "90%", justifyContent: "space-between", paddingTop: 50 }}>
+                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "90%", justifyContent: "space-between", paddingTop: 5 }}>
                     <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
                         My courses
                     </Text>

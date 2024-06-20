@@ -5,9 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 const AskQuestion: React.FC = () => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "90%", justifyContent: "space-between", paddingTop: 50 }}>
+            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "90%", justifyContent: "space-between", paddingTop: 10 }}>
                 <Text style={styles.title}>Ask Question</Text>
-                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 7, position: "absolute", top: 56, right: -18 }}>
+                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 7, position: "absolute", top: 16, right: -18 }}>
                     <Image
                         resizeMode='stretch'
                         style={{ width: 20, height: 20 }}

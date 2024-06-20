@@ -11,7 +11,7 @@ import { ThemedView } from '@/components/ThemedView';
 
 const { width } = Dimensions.get('window');
 
-export default function TabTwoScreen() {
+const EditProScreen = () => {
     const [isStudent, setIsStudent] = useState(true);
     const [mobileNumber, setMobileNumber] = useState('');
     const [selectedBoard, setSelectedBoard] = useState('');
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: 50,
+        // paddingTop: 50,
         backgroundColor: '#fff',
         marginTop: 10
     },
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     signupbutton: {
         width: width * 0.8,
         height: 50,
-        backgroundColor: '#335e f7',
+        backgroundColor: '#335ef7',
         borderRadius: 25, // Medium level border radius
         alignItems: 'center',
         justifyContent: 'center',
@@ -319,3 +319,5 @@ const styles = StyleSheet.create({
         marginBottom: -20
     }
 });
+
+export default EditProScreen;
