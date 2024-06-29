@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity, ImageBackground, Pressable } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { Colors } from '@/constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
-import axios from '../../axiosConfig'
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useRouter } from 'expo-router';
 import { FlatList } from 'react-native-gesture-handler';
+import axios from '../../axiosConfig'
+import { RootStackParamList } from '@/app/types';
 
 interface Course {
     id: number;
@@ -23,6 +22,7 @@ interface Course {
     mentorId: number
     // Add more fields as per your course data structure
 }
+
 interface Mentor {
     id: number,
     name: string,
@@ -38,10 +38,13 @@ interface Mentor {
     phone: string
 }
 
-const HomeScreen: React.FC = () => {
+type Props = {
+    navigation: StackNavigationProp<RootStackParamList, "HomeScreen">; // Adjust the type as per your navigator config
+};
+
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
     const router = useRouter();
-    const navigation = useNavigation();
     const openDrawer = () => {
         navigation.dispatch(DrawerActions.openDrawer());
     };
@@ -55,6 +58,7 @@ const HomeScreen: React.FC = () => {
             const data = await AsyncStorage.getItem('userdata');
             if (data !== null) {
                 const parseuserData = JSON.parse(data);
+                console.log(parseuserData);
                 setUserData(parseuserData);
                 console.log('User data retrieved successfully:', parseuserData);
                 // Now userData is an object that you can use in your component state or elsewhere
@@ -74,7 +78,6 @@ const HomeScreen: React.FC = () => {
                 const fetchedCourses: Course[] = response.data.coursedata; // Assuming response structure
                 setCourseData(fetchedCourses);
                 // console.log(fetchedCourses);
-
             } else {
                 console.log('Failed to fetch course data');
                 // Handle case where backend indicates failure
@@ -104,9 +107,8 @@ const HomeScreen: React.FC = () => {
             // Handle error, show error message to user, etc.
         }
     };
-    const RouterOtherPages = async (pagename: String) => {
-        router.navigate("../../Screens/" + `${pagename}`);
-    }
+
+
     useEffect(() => {
 
         retrieveUserData();
@@ -116,6 +118,8 @@ const HomeScreen: React.FC = () => {
         fetchMentorData();
 
     }, []); // Empty dependency array ensures this effect runs only once on component mount
+
+
 
     return (
 
@@ -140,10 +144,6 @@ const HomeScreen: React.FC = () => {
             </View>
 
             <ImageBackground style={styles.banner} source={require('../../../assets/images/banners/banner2.png')} borderRadius={31}>
-                {/* <Image source={require('../../assets/images/educate8.png')} 
-        resizeMode='stretch'
-         /> */}
-
                 <View style={styles.bannerSearch}>
                     <TextInput style={styles.searchInput} placeholder="Search here..." />
                 </View>
@@ -151,8 +151,8 @@ const HomeScreen: React.FC = () => {
 
             <View style={styles.classesContainer}>
                 <Text style={styles.sectionTitle}>Courses</Text>
-                <TouchableOpacity onPress={() => RouterOtherPages("AllCourses")}>
-                    {/* <TouchableOpacity onPress={() => router.navigate('../../Screens/AllCourses')}> */}
+                {/* <TouchableOpacity onPress={() => RouterOtherPages("AllCourses")}> */}
+                <TouchableOpacity onPress={() => navigation.navigate( "AllCourse" )}>
                     <Text style={styles.seeAllText}>See all</Text>
                 </TouchableOpacity>
             </View>
@@ -161,10 +161,11 @@ const HomeScreen: React.FC = () => {
                 <FlatList
                     data={courseData}
                     horizontal showsHorizontalScrollIndicator={false}
-                    keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
-                        // <TouchableOpacity onPress={() => RouterOtherPages("courseDetails")} style={styles.classBox}>
-                            <TouchableOpacity onPress={() => router.navigate('../Screens/courseDetails')} style={styles.classBox}>
+                        <TouchableOpacity onPress={() => navigation.navigate("courseDetails", { courseId: item.id.toString() })} style={styles.classBox}>
+                            {/* <TouchableOpacity onPress={navigateToCourseDetails} style={styles.classBox}> */}
+
+                            {/* <TouchableOpacity onPress=() = navigateToCourseDetails(item.id)} style={styles.classBox}> */}
                             <Image source={require('../../../assets/images/courses/course3.jpeg')} style={styles.classimage} />
                             <View style={styles.courseTitleContainer}>
                                 <Text style={styles.courseTitleText}>
@@ -191,7 +192,7 @@ const HomeScreen: React.FC = () => {
                                 </View>
                                 <View style={styles.CourseEnrollButton}>
                                     {/* <TouchableOpacity onPress={() => RouterOtherPages("courseDetails")} style={styles.classBox} /> */}
-                                    <Pressable style={styles.enrollButton} onPress={() => router.navigate('../Screens/courseDetails')}>
+                                    <Pressable style={styles.enrollButton} onPress={() => router.navigate('/Screens/courseDetails')}>
                                         <Text style={styles.enrollText}>Enroll Now</Text>
                                     </Pressable>
                                 </View>

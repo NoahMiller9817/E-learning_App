@@ -12,6 +12,9 @@ export enum CustomTab {
 }
 
 const MyDoubts = () => {
+
+
+    
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
             <View style={{ gap: 20 }}>

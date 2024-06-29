@@ -1,24 +1,29 @@
+//Login Page
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Dimensions, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { router, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import axios from "../app/axiosConfig";
-import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Notification from './Screens/notification';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './types';
 
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'Login'>; // Adjust the type as per your navigator config
+};
 
 interface FormData {
   type: string,
   phone: string;
 }
+
 const { width } = Dimensions.get('window');
 
-
-const App = () => {
-
+const Login:React.FC<Props> = ({ navigation }) => {
   const router = useRouter();
   const [isStudent, setIsStudent] = useState(true);
   const [mobileNumber, setMobileNumber] = useState('');
@@ -50,7 +55,7 @@ const App = () => {
         setShowNotification(false);
         alert("Your VerifyCode is " + `${response.data.otp}`);
         savePhoneNumber();
-        router.navigate('/Screens/verifycode');
+        navigation.navigate('VerifyCode');
       }
       // Optionally, navigate to a new screen or show a success message
     } catch (error) {
@@ -64,6 +69,8 @@ const App = () => {
       // Handle error, show error message to user, etc.
     }
   };
+
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -135,7 +142,7 @@ const App = () => {
           )}
           <View style={styles.signupText}>
             <Text>New User ?{' '}</Text>
-            <Pressable onPress={() => router.navigate('/Screens/register')}>
+            <Pressable onPress={() => navigation.navigate('Register')}>
               <Text style={styles.signupLink}>Signup</Text>
             </Pressable>
           </View>
@@ -340,4 +347,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+export default Login;

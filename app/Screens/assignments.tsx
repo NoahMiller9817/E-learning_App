@@ -66,7 +66,7 @@ const UploadAssignment = () => {
   
   
 
-const assignments:React.FC = () => {
+const Assignments:React.FC = () => {
 
     const[selectedTab, setSelectedTab] = useState<CustomTab>(CustomTab.Tab1);
     const buttons:TabButtonType[] = [
@@ -219,5 +219,5 @@ const assignments:React.FC = () => {
 
   })
 
-export default assignments
+export default Assignments
 

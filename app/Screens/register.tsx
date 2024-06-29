@@ -14,11 +14,12 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, ScrollView, Animated, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import RNPickerSelect from 'react-native-picker-select';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useRouter } from 'expo-router';
 import axios from '../axiosConfig';
 import Notification from './notification';
 import Snackbar from 'react-native-snackbar';
-
+import { RootStackParamList } from '../types';
 
 
 interface FormData {
@@ -30,9 +31,11 @@ interface FormData {
   selectedBoard: string | null;
 }
 
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'Register'>; // Adjust the type as per your navigator config
+};
 
-
-export default function TabTwoScreen() {
+const UserRegister:React.FC<Props> = ({ navigation }) => {
   const [isStudent, setIsStudent] = useState(true);
   const [loading, setLoading] = useState(false);
   const [mobileNumber, setMobileNumber] = useState('');
@@ -97,7 +100,7 @@ export default function TabTwoScreen() {
     try {
       const response = await axios.post('/user', formData);
       if (response.data.state == 'You registered successfully!') {
-        router.back();
+        navigation.goBack();
       }
     } catch (error) {
       console.error('Error registering user:', error);
@@ -224,7 +227,7 @@ export default function TabTwoScreen() {
           )}
           <View style={styles.signupText}>
             <Text>Already a User?{' '}</Text>
-            <Pressable onPress={() => router.back()}>
+            <Pressable onPress={() => navigation.goBack()}>
               <Text style={styles.signupLink}>Login</Text>
             </Pressable>
           </View>
@@ -447,4 +450,4 @@ const pickerSelectStyles = StyleSheet.create({
   },
 });
 
-
+export default UserRegister;

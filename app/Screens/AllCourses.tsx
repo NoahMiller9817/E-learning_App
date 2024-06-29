@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '../axiosConfig';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
 
 interface Course {
   id: number;
@@ -19,33 +18,9 @@ interface Course {
   // Add more fields as per your course data structure
 }
 
-
-const courses = [
-  {
-    id: 1,
-    title: 'Mathematics Class 8th',
-    instructor: 'Rahul Singh',
-    rating: 4.5,
-    reviews: 2569,
-    price: 2499,
-    originalPrice: 5999,
-    image: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 2,
-    title: 'Science Class 8th',
-    instructor: 'Anjali Sharma',
-    rating: 4.7,
-    reviews: 1980,
-    price: 2599,
-    originalPrice: 6099,
-    image: '../../assets/images/course/course2/jpeg',
-  },
-  // Add more courses as needed
-];
-
-
-
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'AllCourse'>
+}
 
 const CourseCard = ({ course }) => (
   <View style={styles.courseCard}>
@@ -55,11 +30,10 @@ const CourseCard = ({ course }) => (
       <Text style={styles.courseInstructor}>by {course.mentor.name}</Text>
       <View style={styles.courseRating}>
         <Ionicons name="star" size={16} color="#FFD700" />
-        <Text style={styles.courseRatingText}>{course.rating} 
-          (
-            {/* {course.reviews} */}
-            {/* no reviews parameter */}
-            40)</Text>
+        <Text style={styles.courseRatingText}>{course.rating} ;
+          {/* {course.reviews} */}
+          {/* no reviews parameter */}
+          40)</Text>
       </View>
       <View style={styles.coursePrice}>
         <Text style={styles.courseCurrentPrice}>₹{course.price}</Text>
@@ -72,12 +46,13 @@ const CourseCard = ({ course }) => (
   </View>
 );
 
-export default function AllCourses() {
+const AllCourses:React.FC<Props> = ({navigation}) => {
   const [allcourses, setAllCourses] = useState([]);
+
   const Get_Courses = async () => {
     try {
       const response = await axios.post('/get_course');
-      if (response.data.success){
+      if (response.data.success) {
         setAllCourses(response.data.coursedata);
       }
       else {
@@ -85,18 +60,20 @@ export default function AllCourses() {
       }
       console.log(response.data.coursedata);
     } catch (error) {
-        console.error('Error retrieving userdata:', error);
-        // Handle error, show error message to user, etc.
+      console.error('Error retrieving userdata:', error);
+      // Handle error, show error message to user, etc.
     }
-};
-  useEffect(()=> {
+  };
+  
+  useEffect(() => {
     Get_Courses();
   }, []);
-    
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerText}>All Courses</Text>
@@ -190,8 +167,8 @@ const styles = StyleSheet.create({
   enrollButton: {
     paddingVertical: 5,
     paddingHorizontal: 15,
-    justifyContent:"center",
-    alignItems:"center",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: '#007AFF',
     borderRadius: 5,
   },
@@ -200,3 +177,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default AllCourses;

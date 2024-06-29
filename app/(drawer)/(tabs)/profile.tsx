@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logOut } from '@/app/functions/main';
 
 const ProfileScreen = () => {
     const navigation = useNavigation();
@@ -24,6 +25,8 @@ const ProfileScreen = () => {
                     const parseuserData = JSON.parse(data);
                     setUserData(parseuserData);
                     console.log('User data retrieved successfully:', parseuserData);
+                    const userId = parseuserData.id
+                    console.log(userId)
                     // Now userData is an object that you can use in your component state or elsewhere
                 } else {
                     console.log('No userdata found in AsyncStorage');
@@ -126,7 +129,7 @@ const ProfileScreen = () => {
                             <Ionicons name="chevron-forward-outline" size={20} color="black" style={styles.profileIcon} />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.option} onPress={handleLogout}>
+                    <TouchableOpacity style={styles.option} onPress={logOut}>
                         <Ionicons name="log-out-outline" size={20} color="black" style={styles.profileIcon} />
                         <View style={styles.profile}>
                             <Text style={styles.optionText}>Logout</Text>

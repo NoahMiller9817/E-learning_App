@@ -3,15 +3,19 @@ import { View, Text, TextInput, Pressable, StyleSheet, Dimensions, Image } from 
 import React, { useState, useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { router, useRouter } from 'expo-router';
+import { useNavigation, RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack';
 import axios from '../axiosConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RootStackParamList,  } from '../types';
 
-
+type Props = {
+    navigation: StackNavigationProp<RootStackParamList, 'VerifyCode'>;
+};
 
 const { width } = Dimensions.get('window');
 
-
-const VerifyCode = () => {
+const VerifyCode:React.FC<Props> = ({ navigation }) => {
     const [phone, setPhone] = useState('');
     const [input1, setInput1] = useState('');
     const [input2, setInput2] = useState('');
@@ -42,7 +46,7 @@ const VerifyCode = () => {
             if (response.data.success) {
                 alert('You verified successfully!');
                 // Optionally, navigate to a new screen or show a success message
-                router.navigate('../(tabs)/');
+                navigation.navigate('HomeScreen');
                 setUserdata(response.data.userdata);
                 try {
                     await AsyncStorage.setItem('userdata', JSON.stringify(response.data.userdata));
